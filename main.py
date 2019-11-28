@@ -1,6 +1,15 @@
 from app.algorithms.random_clustering import RandomClustering
+from app.algorithms.spectral_clustering import SpectralClustering
 from app.data.reader import Reader
 
-path = "graphs_processed/ca-GrQc.txt"
-task = Reader.read(path)
-task.solve(RandomClustering(1137))
+import logging
+logging.basicConfig()
+logging.getLogger().setLevel(logging.INFO)
+
+files = ["ca-GrQc", "Oregon-1"]  # , "roadNet-CA", "soc-Epinions1", "web-NotreDame"]
+path = "graphs_processed/%s.txt"
+paths = [path % file for file in files]
+
+for filepath in paths:
+    task = Reader.read(filepath)
+    task.solve(SpectralClustering())
