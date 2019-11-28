@@ -33,7 +33,7 @@ class GraphPartitioningTask:
     def _save_results(self, output_directory, partitions):
         if not os.path.exists(output_directory):
             os.makedirs(output_directory)
-        filename = output_directory + os.sep + self.name + ".txt"
+        filename = output_directory + os.sep + self.name + ".output"
         with open(filename, 'w') as f:
             f.write("# %s %d %d %d\n" %
                     (self.name, self.graph.number_of_nodes(), self.graph.number_of_edges(), self.k))
