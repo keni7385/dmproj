@@ -1,18 +1,22 @@
 import networkx as nx
-from scipy.sparse.linalg import eigsh
+from scipy.sparse.linalg import eigs
 from sklearn.cluster import KMeans
 import numpy as np
 
 
 class SpectralClustering:
 
-    def __init__(self):
+    def __init__(self, normalised=True):
+        self.normalised = normalised
         self.name = "SpectralClustering"
 
     def run(self, graph: nx.Graph, k: int):
-        norm_laplacian = nx.normalized_laplacian_matrix(graph)
-        vals, vecs = eigsh(norm_laplacian, which='SM')
-        x = vecs[:, 0:k]  # eig vect of the second smallest eigenvalue
+        laplacian = nx.laplacian_matrix(graph) if not self.normalised else nx.normalized_laplacian_matrix(graph)
+        laplacian = laplacian.asfptype()
+
+        # TODO ensure to have at least k eigenvectors, eigsh only reports 6
+        vals, vecs = eigs(laplacian, which='SM')
+        x = vecs[:, 0:k].real  # eig vect of the second smallest eigenvalue
 
         emb_nodes = [x[int(node), :] for node in graph.nodes]  # nodes in the embedded space
         emb_nodes = np.array(emb_nodes).reshape(-1, k)

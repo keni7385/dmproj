@@ -12,4 +12,4 @@ paths = [path % file for file in files]
 
 for filepath in paths:
     task = Reader.read(filepath)
-    task.solve(SpectralClustering())
+    task.solve(SpectralClustering(normalised=False))
