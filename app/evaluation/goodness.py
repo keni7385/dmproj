@@ -9,12 +9,7 @@ def balanced_partition(part_graph: nx.Graph, k: int):
 
     for ith_cluster, part in partitions.items():
         v_i = part.nodes
-        v_i_bar = part_graph.nodes - v_i
-        number_of_edges = 0
-        for node_v_i in tqdm(v_i, desc="Cluster %d-th of %d: " % (ith_cluster, k)):
-            for node_v_i_bar in v_i_bar:
-                number_of_edges = number_of_edges + \
-                                  part_graph.number_of_edges(node_v_i, node_v_i_bar)
+        number_of_edges = len(list(nx.algorithms.boundary.edge_boundary(part_graph, v_i)))
         score = score + number_of_edges / len(v_i)
 
     return score
