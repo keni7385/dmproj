@@ -15,8 +15,8 @@ class SpectralClustering:
         laplacian = laplacian.asfptype()
 
         # TODO ensure to have at least k eigenvectors, eigsh only reports 6
-        vals, vecs = eigs(laplacian, which='SM')
-        x = vecs[:, 0:k].real  # eig vect of the second smallest eigenvalue
+        vals, vecs = eigs(laplacian, k=k+1, which='SR')
+        x = vecs.real  # eig vect of the second smallest eigenvalue
 
         emb_nodes = [x[int(node), :] for node in graph.nodes]  # nodes in the embedded space
         emb_nodes = np.array(emb_nodes).reshape(-1, k)

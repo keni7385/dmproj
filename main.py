@@ -1,5 +1,7 @@
 from app.algorithms.random_clustering import RandomClustering
 from app.algorithms.spectral_clustering import SpectralClustering
+from app.algorithms.fifty_kmeans import BalancedSpectralClustering
+from app.algorithms.spectral_clustering_bis import SpectralClusteringBis
 from app.data.reader import Reader
 
 import logging
@@ -12,4 +14,5 @@ paths = [path % file for file in files]
 
 for filepath in paths:
     task = Reader.read(filepath)
-    task.solve(SpectralClustering(normalised=False))
+    task.solve(SpectralClustering(normalised=True))
+    # task.solve(SpectralClusteringBis())
