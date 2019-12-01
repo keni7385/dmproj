@@ -8,9 +8,9 @@ class SpectralClusteringBis:
         self.name = "SpectralLuca"
 
     def run(self, net: nx.Graph, k: int):
-        L = nx.laplacian_matrix(net)
-        L = L.asfptype()
-        vals, vecs = linalg.eigs(L, k=k+5, which='SR')
+        L = nx.normalized_laplacian_matrix(net)
+        # L = L.asfptype()
+        vals, vecs = linalg.eigs(L, k=k+3, which='SR')
         embedding = vecs.real
 
         kmeans = KMeans(n_clusters=k, random_state=1, max_iter=500).fit(embedding)

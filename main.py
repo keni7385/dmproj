@@ -8,11 +8,12 @@ import logging
 logging.basicConfig()
 logging.getLogger().setLevel(logging.INFO)
 
-files = ["ca-GrQc", "Oregon-1"]  # , "roadNet-CA", "soc-Epinions1", "web-NotreDame"]
+# files = ["ca-GrQc", "Oregon-1"]  # , "roadNet-CA", "soc-Epinions1", "web-NotreDame"]
+files = ["roadNet-CA", "soc-Epinions1", "web-NotreDame"]
 path = "graphs_processed/%s.txt"
 paths = [path % file for file in files]
 
 for filepath in paths:
     task = Reader.read(filepath)
-    task.solve(SpectralClustering(normalised=True))
-    # task.solve(SpectralClusteringBis())
+    # task.solve(SpectralClustering(normalised=True))
+    task.solve(SpectralClusteringBis())
