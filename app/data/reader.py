@@ -31,17 +31,17 @@ class Reader:
                                  "contained in the graph, please correct the input file." %
                                  (num_of_vertices, num_of_edges, graph.number_of_nodes(), graph.number_of_edges()))
 
-        return name, k, graph
+        return {"name": name, "k": k, "graph": graph}
 
     @staticmethod
     def load_embedding(output_dir, task_params, max_offset, negative_offset, normalised=True):
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        num_eig_vec = task_params[1] + max_offset - negative_offset
+        num_eig_vec = task_params["k"] + max_offset - negative_offset
         if num_eig_vec < 1:
             num_eig_vec = 1
-        eigvec_file = "%s_size_%d_%s.eigvec" % (task_params[0], num_eig_vec, "norm" if normalised else "not_norm")
+        eigvec_file = "%s_size_%d_%s.eigvec" % (task_params["name"], num_eig_vec, "norm" if normalised else "not_norm")
         eigvec_file = output_dir + os.sep + eigvec_file
         file_exists = os.path.exists(eigvec_file) and os.path.isfile(eigvec_file)
 
@@ -51,7 +51,7 @@ class Reader:
                 embedding = pickle.load(f)
         else:
             logging.info("[Computing] eigen vectors, eigen vector file not found.")
-            embedding = compute_eigenvectors(task_params[2], task_params[1] + max_offset - negative_offset,
+            embedding = compute_eigenvectors(task_params["graph"], task_params["k"] + max_offset - negative_offset,
                                              normalised=normalised)
             with open(eigvec_file, 'wb') as f:
                 pickle.dump(embedding, f)
