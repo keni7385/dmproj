@@ -12,7 +12,7 @@ files = ["ca-GrQc", "Oregon-1", "soc-Epinions1", "web-NotreDame", "roadNet-CA"]
 path = "graphs_processed/%s.txt"
 output_directory = "results"
 paths = [path % file for file in files[0:2]]
-max_offset = 24
+max_offset = 30
 negative_offset = 4
 
 for filepath in paths:
