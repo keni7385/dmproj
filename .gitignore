@@ -211,6 +211,6 @@ ENV/
 env.bak/
 venv.bak/
 pip-selfcheck.json
-results
+results/
 
 # End of https://www.gitignore.io/api/python,virtualenv,pycharm+all
