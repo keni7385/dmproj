@@ -26,7 +26,7 @@ class GraphPartitioningTask:
         data = "[Starting] to solve {} for k={} clusters with algorithm {} and offset={}\n"\
             .format(self.name, self.k, algorithm.name, self.offset)
 
-        partitioned = algorithm.run(self.graph, self.k, self.offset)
+        partitioned = algorithm.run(self.graph, self.k)
         logging.info("[Done] {%s} returned.", algorithm.name)
         data = data + "[Done] {} returned.\n".format(algorithm.name)
 
@@ -49,7 +49,7 @@ class GraphPartitioningTask:
                     (self.name, self.graph.number_of_nodes(), self.graph.number_of_edges(), self.k))
             for node, data in partitions.nodes(data=True):
                 f.write("%s %d\n" % (node, data.get('partition')))
-        logging.info("[Output Done] results on file %s\n" % filename)
+        logging.info("[Output Done] results on file %s" % filename)
 
     def _save_info(self, output_directory_info, data):
         if not os.path.exists(output_directory_info):

@@ -6,7 +6,7 @@ from app.data.task import GraphPartitioningTask
 class Reader:
 
     @staticmethod
-    def read(filename, offset):
+    def read(filename):
         with open(filename) as f:
             header = f.readline()
 
@@ -26,4 +26,4 @@ class Reader:
                                  "contained in the graph, please correct the input file." %
                                  (num_of_vertices, num_of_edges, graph.number_of_nodes(), graph.number_of_edges()))
 
-        return GraphPartitioningTask(name, k, graph, offset)
+        return name, k, graph
