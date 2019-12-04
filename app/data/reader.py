@@ -34,7 +34,7 @@ class Reader:
         return {"name": name, "k": k, "graph": graph}
 
     @staticmethod
-    def load_embedding(output_dir, task_params, max_offset, negative_offset, normalised=True):
+    def load_embedding(output_dir, task_params, max_offset, negative_offset, normalised=True, directed=False):
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
@@ -52,7 +52,7 @@ class Reader:
         else:
             logging.info("[Computing] eigen vectors, eigen vector file not found.")
             embedding = compute_eigenvectors(task_params["graph"], task_params["k"] + max_offset - negative_offset,
-                                             normalised=normalised)
+                                             normalised=normalised, directed=directed)
             with open(eigvec_file, 'wb') as f:
                 pickle.dump(embedding, f)
             logging.info("[Writing] eigen vectors to %s", eigvec_file)
