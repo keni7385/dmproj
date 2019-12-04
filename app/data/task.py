@@ -19,26 +19,37 @@ class GraphPartitioningTask:
         self.offset = offset
 
     def solve(self, algorithm, objective_function=balanced_partition, output_directory="results",
-              output_directory_info="info", save_results=True, save_info=True):
+              output_directory_info="info", save_results=True, save_info=True, curr_smallest_value=None,
+              normalised=True):
 
-        logging.info("[Starting] to solve {%s} for k=%d clusters with algorithm {%s}, offset=%d",
-                     self.name, self.k, algorithm.name, self.offset)
-        data = "[Starting] to solve {} for k={} clusters with algorithm {} and offset={}\n"\
-            .format(self.name, self.k, algorithm.name, self.offset)
+        logging.info("[Starting] to solve {} for k={} clusters with algorithm {}, offset={}, random_state={}, normalised={}".format(
+                     self.name, self.k, algorithm.name, self.offset, os.environ["random_state"], normalised))
+        data = "[Starting] to solve {} for k={} clusters with algorithm {} and offset={}, random_state={}, normalised={}\n".format(
+            self.name, self.k, algorithm.name, self.offset, os.environ["random_state"], normalised)
 
         partitioned = algorithm.run(self.graph, self.k)
-        logging.info("[Done] {%s} returned.", algorithm.name)
+
+        logging.info("[Done] {} returned.".format(algorithm.name))
         data = data + "[Done] {} returned.\n".format(algorithm.name)
 
         logging.info("[Starting] clustering evaluation")
         score = objective_function(partitioned, self.k)
-        logging.info("[Finished] Score obtained = %f", score)
+        logging.info("[Finished] Score obtained = {}".format(score))
+
         data = data + "[Finished] Score obtained = {}\n\n".format(score)
 
-        if save_results:
+        if save_results and (curr_smallest_value > score or curr_smallest_value is None):
             self._save_results(output_directory, partitioned)
-        if save_info:
+        else:
+            print("\n")
+
+        if save_info and (curr_smallest_value > score or curr_smallest_value is None):
             self._save_info(output_directory_info, data)
+
+        if curr_smallest_value > score:
+            return score
+        else:
+            return curr_smallest_value
 
     def _save_results(self, output_directory, partitions):
         if not os.path.exists(output_directory):
@@ -57,4 +68,4 @@ class GraphPartitioningTask:
         filename = output_directory_info + os.sep + self.name + ".txt"
         with open(filename, 'a+') as f:
             f.write(data)
-        logging.info("[Output Done] info in file %s\n" % filename)
+        logging.info("[Output Done] info in file {}\n".format(filename))

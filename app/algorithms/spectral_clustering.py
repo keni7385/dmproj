@@ -1,7 +1,7 @@
 import networkx as nx
 from scipy.sparse import linalg
 from sklearn.cluster import KMeans
-
+import os
 
 class SpectralClustering:
 
@@ -11,7 +11,7 @@ class SpectralClustering:
 
     def run(self, graph: nx.Graph, k: int):
 
-        kmeans = KMeans(n_clusters=k, random_state=1, max_iter=500).fit(self.embedding)
+        kmeans = KMeans(n_clusters=k, random_state=int(os.environ["random_state"]), max_iter=500).fit(self.embedding)
         pred_k = kmeans.predict(self.embedding)
 
         partitioned = nx.Graph()
