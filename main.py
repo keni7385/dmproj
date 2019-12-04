@@ -16,8 +16,8 @@ files = ["ca-GrQc", "Oregon-1", "soc-Epinions1", "web-NotreDame", "roadNet-CA"]
 path = "graphs_processed/%s.txt"
 output_directory = "results"
 paths = [path % file for file in files[2:3]]
-max_offset = 30
-negative_offset = 4
+max_offset = 26  # default 30
+negative_offset = 0  # default 4
 
 for filepath in paths:
     print("Started {}".format(filepath))
@@ -32,7 +32,7 @@ for filepath in paths:
                                           normalised=normalised)
         # embedding = compute_eigenvectors(graph_no_loops, task_params["k"] + max_offset - negative_offset, normalised)
 
-        for random_state in range(10, 20):
+        for random_state in range(20, 40):
             # Try different random states for the k-means algorithm
             os.environ["random_state"] = str(random_state)
 
