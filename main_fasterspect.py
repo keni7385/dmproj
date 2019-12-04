@@ -3,7 +3,7 @@ import os
 
 from numpy import inf
 
-from app.algorithms.faster_spectral_custering import FasterSpectralClustering
+from app.algorithms.unnormalized_faster_spectral_custering import UnNormalizedFasterSpectralClustering
 from app.data.reader import Reader
 from app.data.task import GraphPartitioningTask
 
@@ -21,12 +21,13 @@ for filepath in paths[3:5]:
     print("Started {}".format(filepath))
     task_params = Reader.read(filepath)
     curr_smallest_value = inf
-    for random_state in range(10):
+    for random_state in range(5):
         # Try different random states for the k-means algorithm
         os.environ["random_state"] = str(random_state)
 
         for offset in range(max_offset):
             task_params["offset"] = offset - negative_offset
             task = GraphPartitioningTask(**task_params)
-            curr_smallest_value = task.solve(FasterSpectralClustering(offset-negative_offset),
+            curr_smallest_value = task.solve(UnNormalizedFasterSpectralClustering(offset-negative_offset,
+                                                                                  random_seed_clustering=random_state),
                                              curr_smallest_value=curr_smallest_value, normalised=True)

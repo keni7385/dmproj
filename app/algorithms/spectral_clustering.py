@@ -4,6 +4,7 @@ from scipy.sparse.linalg import LinearOperator
 from sklearn.cluster import KMeans
 import os
 
+
 class SpectralClustering:
 
     def __init__(self, embedding):
