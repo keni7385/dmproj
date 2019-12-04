@@ -29,10 +29,11 @@ for filepath in paths:
     # for normalised in [True, False]:
     for normalised in [False]:
         embedding = Reader.load_embedding(output_directory, task_params, max_offset, negative_offset,
-                                          normalised=normalised)
+                                          normalised=normalised)[:, 1:]
+
         # embedding = compute_eigenvectors(graph_no_loops, task_params["k"] + max_offset - negative_offset, normalised)
 
-        for random_state in range(20, 40):
+        for random_state in range(0, 12):
             # Try different random states for the k-means algorithm
             os.environ["random_state"] = str(random_state)
 
