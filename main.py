@@ -3,6 +3,8 @@ from app.algorithms.spectral_clustering import SpectralClustering
 from app.algorithms.fifty_kmeans import BalancedSpectralClustering
 from app.data.reader import Reader
 from app.data.task import GraphPartitioningTask
+import networkx as nx
+from app.algorithms.spectral_clustering import compute_eigenvectors
 
 import logging
 logging.basicConfig()
@@ -19,8 +21,12 @@ for normalised in [True, False]:
     for filepath in paths:
         print("Started {}".format(filepath))
         task_params = Reader.read(filepath)
+        # Removing loops does not change for ca-GrQc
+        # graph_no_loops = task_params["graph"].copy()
+        # graph_no_loops.remove_edges_from(nx.selfloop_edges(task_params["graph"]))
         embedding = Reader.load_embedding(output_directory, task_params, max_offset, negative_offset,
                                           normalised=normalised)
+        # embedding = compute_eigenvectors(graph_no_loops, task_params["k"] + max_offset - negative_offset, normalised)
 
         for offset in range(max_offset):
             task_params["offset"] = offset - negative_offset

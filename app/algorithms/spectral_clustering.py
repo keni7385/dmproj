@@ -1,5 +1,6 @@
 import networkx as nx
 from scipy.sparse import linalg
+from scipy.sparse.linalg import LinearOperator
 from sklearn.cluster import KMeans
 
 
@@ -35,6 +36,14 @@ def compute_eigenvectors(graph: nx.Graph,  num: int, normalised: bool = False):
     else:
         laplacian = nx.laplacian_matrix(graph)
         laplacian = laplacian.asfptype()
+
+    # from scipy.sparse import eye
+    # from scipy.sparse.linalg import LinearOperator, eigsh, minres
+    # sigma = 1
+    # OP = laplacian - sigma * eye(laplacian.shape[0])
+    # OPinv = LinearOperator(shape=laplacian.shape, dtype=laplacian.dtype, matvec=lambda v: minres(OP, v, tol=1e-3)[0])
+    # w, v = eigsh(laplacian, sigma=sigma, k=num, which='SM', tol=1e-4, OPinv=OPinv)
+    # return v
 
     _, vecs = linalg.eigsh(laplacian, k=num, which='SM')
 
