@@ -15,7 +15,7 @@ logging.getLogger().setLevel(logging.INFO)
 files = ["ca-GrQc", "Oregon-1", "soc-Epinions1", "web-NotreDame", "roadNet-CA"]
 path = "graphs_processed/%s.txt"
 output_directory = "results"
-paths = [path % file for file in files]
+paths = [path % file for file in files[2:3]]
 max_offset = 30
 negative_offset = 4
 
