@@ -27,11 +27,18 @@ for filepath in paths:
     # graph_no_loops.remove_edges_from(nx.selfloop_edges(task_params["graph"]))
     curr_smallest_value = inf
     # for normalised in [True, False]:
+
+    # Defines whether the first eigenvector should be dropped
+    drop_first_eigenvector = True
+
     for normalised in [False]:
         embedding = Reader.load_embedding(output_directory, task_params, max_offset, negative_offset,
-                                          normalised=normalised)[:, 1:]
+                                          normalised=normalised)
 
         # embedding = compute_eigenvectors(graph_no_loops, task_params["k"] + max_offset - negative_offset, normalised)
+
+        if drop_first_eigenvector:
+            embedding = embedding[:, 1:]
 
         for random_state in range(0, 12):
             # Try different random states for the k-means algorithm
