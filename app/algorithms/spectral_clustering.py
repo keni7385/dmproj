@@ -2,6 +2,7 @@ import networkx as nx
 from scipy.sparse import linalg
 from scipy.sparse.linalg import LinearOperator
 from sklearn.cluster import KMeans
+from sklearn.manifold import spectral_embedding
 import os
 
 
@@ -49,3 +50,11 @@ def compute_eigenvectors(graph: nx.Graph,  num: int, normalised: bool = False):
     _, vecs = linalg.eigsh(laplacian, k=num, which='SM')
 
     return vecs.real
+
+
+def compute_manifold_eigenvector(graph: nx.Graph,  num: int, normalised: bool = False):
+    embedding = spectral_embedding(nx.adjacency_matrix(graph), n_components=num,
+                                   eigen_solver='amg',
+                                   random_state=0,  # int(os.environ["random_state_embedding"]),
+                                   eigen_tol=0.0, drop_first=False, norm_laplacian=normalised)
+    return embedding

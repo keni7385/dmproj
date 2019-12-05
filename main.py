@@ -15,11 +15,12 @@ logging.getLogger().setLevel(logging.INFO)
 files = ["ca-GrQc", "Oregon-1", "soc-Epinions1", "web-NotreDame", "roadNet-CA"]
 path = "graphs_processed/%s.txt"
 output_directory = "results"
-paths = [path % file for file in files[2:3]]
+paths = [path % file for file in files]
 max_offset = 26  # default 30
 negative_offset = 0  # default 4
+drop_first_eigenvector = True  # Defines whether the first eigenvector should be dropped
 
-for filepath in paths:
+for filepath in paths[0:2]:
     print("Started {}".format(filepath))
     task_params = Reader.read(filepath)
     # Removing loops does not change for ca-GrQc
@@ -28,12 +29,9 @@ for filepath in paths:
     curr_smallest_value = inf
     # for normalised in [True, False]:
 
-    # Defines whether the first eigenvector should be dropped
-    drop_first_eigenvector = True
-
     for normalised in [False]:
         embedding = Reader.load_embedding(output_directory, task_params, max_offset, negative_offset,
-                                          normalised=normalised)
+                                          normalised=normalised, manifold_method=False)
 
         # embedding = compute_eigenvectors(graph_no_loops, task_params["k"] + max_offset - negative_offset, normalised)
 
