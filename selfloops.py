@@ -1,6 +1,11 @@
 import networkx as nx
 from app.data.reader import Reader
 
+########################################################################################################
+# Supplementary code
+# No score is computed, only the number of self-edges is computed for each graph.
+########################################################################################################
+
 files = ["ca-GrQc", "Oregon-1", "soc-Epinions1", "web-NotreDame", "roadNet-CA"]
 path = "graphs_processed/%s.txt"
 output_directory = "results"
