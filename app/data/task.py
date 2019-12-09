@@ -21,6 +21,18 @@ class GraphPartitioningTask:
     def solve(self, algorithm, objective_function=balanced_partition, output_directory="results",
               output_directory_info="info", save_results=True, save_info=True, curr_smallest_value=None,
               normalised=True):
+        """
+        Runs the given algorithm, evaluates the outcomes, stores and returns the results
+        :param algorithm: the clustering algorithm to run
+        :param objective_function: function to evaluate the outcome
+        :param output_directory: path in which the results are stored
+        :param output_directory_info: path in which the logs are stored
+        :param save_results: flag defining whether the results should be stored or not
+        :param save_info: flag defining whether the logs should be stored or not
+        :param curr_smallest_value: best score found so far; threshold for storing the results
+        :param normalised: indicates whether the Laplacian matrix is normalized or not; used for logging only
+        :return: the minimum between curr_smallest_value and the new score
+        """
 
         logging.info("[Starting] to solve {} for k={} clusters with algorithm {}, offset={}, random_state={}, normalised={}".format(
                      self.name, self.k, algorithm.name, self.offset, os.environ["random_state"], normalised))
@@ -52,6 +64,11 @@ class GraphPartitioningTask:
             return curr_smallest_value
 
     def _save_results(self, output_directory, partitions):
+        """
+        Saves the partition file into a file
+        :param output_directory: path in which the results are stored
+        :param partitions: nx.Graph() containing the nodes with the partitioned labels
+        """
         if not os.path.exists(output_directory):
             os.makedirs(output_directory)
         filename = output_directory + os.sep + self.name + ".output"
@@ -63,6 +80,11 @@ class GraphPartitioningTask:
         logging.info("[Output Done] results on file %s" % filename)
 
     def _save_info(self, output_directory_info, data):
+        """
+        Saves the logs of the results
+        :param output_directory_info: path in which the logs are stored
+        :param data: content of the logs
+        """
         if not os.path.exists(output_directory_info):
             os.makedirs(output_directory_info)
         filename = output_directory_info + os.sep + self.name + ".txt"

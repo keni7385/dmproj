@@ -4,6 +4,12 @@ from tqdm import tqdm
 
 
 def balanced_partition(part_graph: nx.Graph, k: int):
+    """
+    Computes the RatioCut on the given partitioned graph
+    :param part_graph: partitioned graph to evaluate
+    :param k: number of clusters
+    :return: score according to RatioCut
+    """
     score = 0
     partitions = get_partitions(part_graph, k)
 

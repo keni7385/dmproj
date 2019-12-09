@@ -2,9 +2,7 @@ import os
 import pickle
 import re
 import logging
-
 import networkx as nx
-
 from app.algorithms.spectral_clustering import compute_eigenvectors, compute_manifold_eigenvector
 
 
@@ -12,6 +10,11 @@ class Reader:
 
     @staticmethod
     def read(filename):
+        """
+        Loads the graph from file
+        :param filename: path of the file to load
+        :return: dictionary containing the name of graph loaded, the number of clusters and the graph itself
+        """
         with open(filename) as f:
             header = f.readline()
 
@@ -35,6 +38,16 @@ class Reader:
 
     @staticmethod
     def load_embedding(output_dir, task_params, max_offset, negative_offset, normalised=True, manifold_method=False):
+        """
+        Static method that loads the embedding if stored, computes and stores it otherwise
+        :param output_dir: path of the directory where to store or load the embedding from
+        :param task_params: parameters needed to identify the file through its name or to store it with the right name
+        :param max_offset: maximum offset applied to the number of eigenvectors (=k+max+offset-1+negative_offset)
+        :param negative_offset: negative offset applied to the number of eigenvectors (=k+max+offset-1+negative_offset)
+        :param normalised: flag defining whether the Laplacian matrix is/should be normalised or not
+        :param manifold_method: flag defining whether the manifold method is/should be used or not
+        :return: embedding whose columns are the eigenvectors
+        """
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 

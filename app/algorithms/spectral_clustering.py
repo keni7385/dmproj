@@ -13,7 +13,12 @@ class SpectralClustering:
         self.embedding = embedding
 
     def run(self, graph: nx.Graph, k: int):
-
+        """
+        Applies the k-means algorithm to the embedding given in the construction of the instance
+        :param graph: graph to be partitioned
+        :param k: number of clusters
+        :return: nx.Graph() containing the nodes with the partitioned labels
+        """
         kmeans = KMeans(n_clusters=k, random_state=int(os.environ["random_state"]), max_iter=500).fit(self.embedding)
         pred_k = kmeans.predict(self.embedding)
 
@@ -53,8 +58,15 @@ def compute_eigenvectors(graph: nx.Graph,  num: int, normalised: bool = False):
 
 
 def compute_manifold_eigenvector(graph: nx.Graph,  num: int, normalised: bool = False):
+    """
+    Computes the eigenvectors through the amg solver
+    :param graph: graph on which the eigenvectors are computed
+    :param num: number of eigenvectors to be computed
+    :param normalised: flag defining whether the Laplacian matrix should be normalised or not
+    :return: embedding whose columns are the eigenvectors
+    """
     embedding = spectral_embedding(nx.adjacency_matrix(graph), n_components=num,
-                                   # eigen_solver='amg',
+                                   eigen_solver='amg',
                                    random_state=0,  # int(os.environ["random_state_embedding"]),
                                    eigen_tol=0.0, drop_first=False, norm_laplacian=normalised)
     return embedding
