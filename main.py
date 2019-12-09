@@ -18,21 +18,21 @@ output_directory = "results"
 paths = [path % file for file in files]
 max_offset = 26  # default 30
 negative_offset = 0  # default 4
-drop_first_eigenvector = True  # Defines whether the first eigenvector should be dropped
+drop_first_eigenvector = False  # Defines whether the first eigenvector should be dropped
 
-for filepath in paths[0:2]:
+for filepath in paths[3:4]:
     print("Started {}".format(filepath))
     task_params = Reader.read(filepath)
     # Removing loops does not change for ca-GrQc
     # graph_no_loops = task_params["graph"].copy()
     # graph_no_loops.remove_edges_from(nx.selfloop_edges(task_params["graph"]))
     curr_smallest_value = inf
-    # for normalised in [True, False]:
 
     for normalised in [False]:
         embedding = Reader.load_embedding(output_directory, task_params, max_offset, negative_offset,
                                           normalised=normalised, manifold_method=False)
 
+        # No loops
         # embedding = compute_eigenvectors(graph_no_loops, task_params["k"] + max_offset - negative_offset, normalised)
 
         if drop_first_eigenvector:
