@@ -1,4 +1,4 @@
-# Spectral Clustering: a FlatEarth Approach
+# Spectral Clustering
 
 ## Setup
 Assure to have Python 3+ installed on your computer
